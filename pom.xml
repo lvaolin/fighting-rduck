@@ -10,6 +10,7 @@
 		<module>rpc-itf</module>
 		<module>rpc-client</module>
 		<module>rpc-rduck</module>
+		<module>rpc-rduck-protocol</module>
 	</modules>
 
 
