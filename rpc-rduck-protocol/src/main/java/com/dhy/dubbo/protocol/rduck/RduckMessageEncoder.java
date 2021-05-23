@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
-import io.netty.handler.codec.marshalling.MarshallingEncoder;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -18,8 +18,8 @@ import java.util.List;
 public class RduckMessageEncoder extends MessageToMessageEncoder<RduckMessage> {
 
     MarshallingEncoder encoder;
-    public RduckMessageEncoder() {
-       // this.encoder = new MarshallingEncoder();
+    public RduckMessageEncoder() throws IOException {
+        this.encoder = new MarshallingEncoder();
     }
 
     @Override
@@ -53,8 +53,8 @@ public class RduckMessageEncoder extends MessageToMessageEncoder<RduckMessage> {
                     sendBuffer.writeInt(keyBytes.length);
                     //再写key的内容
                     sendBuffer.writeBytes(keyBytes);
-                    //@todo
-                    encoder.write(ctx,value,null);
+                    //@todo 关键所在：对象的序列化
+                    encoder.encode(value,sendBuffer);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -65,7 +65,7 @@ public class RduckMessageEncoder extends MessageToMessageEncoder<RduckMessage> {
 
         //消息体的序列化和写入缓冲区
         if (msg.getBody()!=null) {
-            encoder.write(ctx,msg.getBody(),null);
+            encoder.encode(msg.getBody(),sendBuffer);
         }else{
             sendBuffer.writeInt(0);
         }

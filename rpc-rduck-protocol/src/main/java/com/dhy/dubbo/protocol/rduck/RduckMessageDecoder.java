@@ -3,10 +3,9 @@ package com.dhy.dubbo.protocol.rduck;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.MessageToMessageEncoder;
 
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @Title 大黄鸭协议解码器
@@ -15,9 +14,11 @@ import java.util.List;
  * @Date 2021/5/23 10:36
  **/
 public class RduckMessageDecoder extends LengthFieldBasedFrameDecoder {
-
-    public RduckMessageDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength) {
+    MarshallingDecoder marshallingDecoder;
+    public RduckMessageDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength) throws IOException {
         super(maxFrameLength, lengthFieldOffset, lengthFieldLength, 0, 0);
+        marshallingDecoder = new MarshallingDecoder();
+
     }
 
     @Override
@@ -46,7 +47,7 @@ public class RduckMessageDecoder extends LengthFieldBasedFrameDecoder {
             frame.readBytes(keyBytes);
             String key = new String(keyBytes, "UTF-8");
             //@todo 对象反序列化
-            Object value = null;
+            Object value = marshallingDecoder.decode(frame);
             attachment.put(key,value);
         }
         //附件
@@ -54,7 +55,7 @@ public class RduckMessageDecoder extends LengthFieldBasedFrameDecoder {
         Object body = null;
         if (frame.readableBytes()>4) {
             //@todo 读取body对象，反序列化成对象
-            body = null;
+            body = marshallingDecoder.decode(frame);
         }
         message.setHeader(header);
         message.setBody(body);
