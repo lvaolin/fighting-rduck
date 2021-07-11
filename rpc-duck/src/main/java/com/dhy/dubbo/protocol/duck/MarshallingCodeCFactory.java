@@ -1,5 +1,7 @@
 package com.dhy.dubbo.protocol.duck;
 
+import org.jboss.marshalling.*;
+
 import java.io.IOException;
 
 /**

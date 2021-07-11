@@ -26,16 +26,12 @@ public class RpcRequest implements Serializable {
      */
     private Class<?>[] parameterTypes;
 
-    @Override
-    public String toString() {
-        return "RpcRequest{" +
-                "applicationName='" + applicationName + '\'' +
-                ", className='" + className + '\'' +
-                ", methodName='" + methodName + '\'' +
-                ", parameterValues=" + Arrays.toString(parameterValues) +
-                ", parameterTypes=" + Arrays.toString(parameterTypes) +
-                '}';
-    }
+    /**
+     * 异步调用
+     */
+    private Boolean async = false;
+
+
 
     public String getApplicationName() {
         return applicationName;
@@ -78,4 +74,23 @@ public class RpcRequest implements Serializable {
         this.parameterTypes = parameterTypes;
     }
 
+    public Boolean getAsync() {
+        return async;
+    }
+
+    public void setAsync(Boolean async) {
+        this.async = async;
+    }
+
+    @Override
+    public String toString() {
+        return "RpcRequest{" +
+                "applicationName='" + applicationName + '\'' +
+                ", className='" + className + '\'' +
+                ", methodName='" + methodName + '\'' +
+                ", parameterValues=" + Arrays.toString(parameterValues) +
+                ", parameterTypes=" + Arrays.toString(parameterTypes) +
+                ", async=" + async +
+                '}';
+    }
 }

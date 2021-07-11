@@ -2,8 +2,6 @@ package com.dhy.server;
 
 import com.dhy.dubbo.framework.LocalBeanFactory;
 import com.dhy.dubbo.framework.URL;
-import com.dhy.dubbo.protocol.dubbo.NettyServer;
-import com.dhy.dubbo.protocol.rmi.MyServer;
 import com.dhy.dubbo.protocol.rmi.RmiProtocol;
 import com.dhy.server.impl.UserServiceImpl;
 import com.dhy.server.itf.IUserServive;
