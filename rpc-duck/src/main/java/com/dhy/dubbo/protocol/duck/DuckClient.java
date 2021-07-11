@@ -1,5 +1,6 @@
 package com.dhy.dubbo.protocol.duck;
 
+import com.dhy.dubbo.dto.RpcRequest;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -21,10 +22,7 @@ public class DuckClient {
 
     private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
     EventLoopGroup group = new NioEventLoopGroup();
-    public static void main(String[] args) throws Exception{
-        new DuckClient().connect("127.0.0.1",9999);
-    }
-    public void connect(String host,int port) throws Exception{
+    public Object send(String host, int port, RpcRequest rpcRequest) throws Exception{
         try {
             Bootstrap bootstrap = new Bootstrap();
             Bootstrap channel = bootstrap.group(this.group).channel(NioSocketChannel.class);
@@ -45,21 +43,32 @@ public class DuckClient {
                     pipeline.addLast("HeartBeatReqHandler",new HeartBeatReqHandler());
                 }
             });
+            //建立通道连接
             ChannelFuture channelFuture = channel.connect(host, port).sync();
-            channelFuture.channel().closeFuture().sync();
+            //构造 duck协议报文
+            DuckMessage duckMessage = new DuckMessage();
+            duckMessage.setHeader(new Header());//报文头
+            duckMessage.setBody(rpcRequest);//请求业务数据
+            //发送请求
+            channelFuture.channel().writeAndFlush(duckMessage);
+            //接收响应
+            Object result = new Object();
+            channelFuture.channel().read().write(result);
+            //channelFuture.channel().closeFuture().sync();
+            return result;
         }finally {
-            scheduledExecutorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        TimeUnit.SECONDS.sleep(5);
-                        //重连
-                        connect(host,port);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            });
+//            scheduledExecutorService.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        TimeUnit.SECONDS.sleep(5);
+//                        //重连
+//                        connect(host,port);
+//                    }catch (Exception e){
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
         }
 
 

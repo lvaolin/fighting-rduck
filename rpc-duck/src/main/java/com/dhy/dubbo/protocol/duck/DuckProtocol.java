@@ -13,11 +13,21 @@ import com.dhy.dubbo.framework.URL;
 public class DuckProtocol implements Protocol {
     @Override
     public Object send(URL url, RpcRequest rpcRequest) {
-        return null;
+        try {
+            DuckClient duckClient = new DuckClient();
+            return duckClient.send("127.0.0.1",9999,rpcRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public void start(URL url) {
-
+        try {
+            new DuckServer().bind();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

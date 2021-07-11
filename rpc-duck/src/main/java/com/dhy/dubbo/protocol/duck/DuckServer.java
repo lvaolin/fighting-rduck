@@ -18,9 +18,6 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
  * @Date 2021/5/23 15:15
  **/
 public class DuckServer {
-    public static void main(String[] args) throws Exception {
-        new DuckServer().bind();
-    }
 
     public void bind() throws Exception{
         NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
