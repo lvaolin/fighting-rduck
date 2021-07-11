@@ -47,7 +47,7 @@ public class RmiServer {
         //追加本服务节点的地址信息 到下级临时节点
         System.out.println("向zookeeper注册服务提供者地址："+url.getHost()+":"+url.getPort());
         while (true) {
-            System.out.println("服务端监听已准备好");
+            System.out.println("监听中----");
             Socket socket = serverSocket.accept();
             executor.execute(new RmiTask(socket));
         }
