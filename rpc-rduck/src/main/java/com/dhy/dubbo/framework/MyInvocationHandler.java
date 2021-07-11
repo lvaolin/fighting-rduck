@@ -7,6 +7,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
 
+/**
+ * 动态代理的实现
+ */
 public class MyInvocationHandler implements InvocationHandler {
     private String applicationName;
     public MyInvocationHandler(String applicationName){
@@ -30,6 +33,13 @@ public class MyInvocationHandler implements InvocationHandler {
         return object;
     }
 
+    /**
+     * 发起RPC调用
+     * @param rpcRequest
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private Object rpcInvoke(RpcRequest rpcRequest) throws IOException, ClassNotFoundException {
 
         //获取提供者主机列表

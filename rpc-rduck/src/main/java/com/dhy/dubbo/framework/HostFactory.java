@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @Title HostFactory
- * @Description
+ * @Description 根据服务名称从 注册中心 获取 主机列表  ip:port
  * @Author lvaolin
  * @Date 2021/3/14 17:55
  **/

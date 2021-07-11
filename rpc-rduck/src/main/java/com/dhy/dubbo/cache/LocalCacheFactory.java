@@ -9,12 +9,22 @@ import java.util.List;
 
 /**
  * @Title LocalCacheFactory
- * @Description
+ * @Description  缓存
  * @Author lvaolin
  * @Date 2021/3/14 17:38
  **/
 public class LocalCacheFactory {
+    /**
+     * 提供者地址缓存
+     */
     public static Cache<String, List<String>> hostsCache = CacheBuilder.newBuilder().build();
+    /**
+     * zookeeper 客户端长连接
+     */
     public static MyZkClient myZkClient = new MyZkClient();
+
+    /**
+     * 目录监视器缓存
+     */
     public static Cache<String, PathChildrenCache> pathChildrenCacheCache = CacheBuilder.newBuilder().build();
 }

@@ -7,12 +7,12 @@ import com.dhy.dubbo.framework.URL;
 public class DubboProtocol implements Protocol {
     @Override
     public Object send(URL url, RpcRequest rpcRequest) {
-        return new NettyClient().send(url.getHost(), url.getPort(), rpcRequest);
+        return new DubboClient().send(url.getHost(), url.getPort(), rpcRequest);
     }
 
     @Override
     public void start(URL url) {
-        NettyServer nettyServer = new NettyServer();
+        DubboServer nettyServer = new DubboServer();
         nettyServer.start(url.getHost(),url.getPort());
     }
 }

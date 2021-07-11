@@ -1,8 +1,10 @@
 package com.dhy.dubbo.framework;
 
-import com.dhy.dubbo.protocol.http.HttpProtocol;
 import com.dhy.dubbo.protocol.rmi.RmiProtocol;
 
+/**
+ * 通信协议工厂
+ */
 public class ProtocolFactory {
 
     public static Protocol getProtocol(){

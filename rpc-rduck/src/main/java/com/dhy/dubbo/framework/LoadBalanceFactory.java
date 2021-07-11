@@ -3,6 +3,9 @@ package com.dhy.dubbo.framework;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * 提供者负载均衡
+ */
 public class LoadBalanceFactory {
     /**
      * 负载均衡
