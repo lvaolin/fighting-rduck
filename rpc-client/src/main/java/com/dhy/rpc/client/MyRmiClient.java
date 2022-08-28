@@ -1,7 +1,7 @@
 package com.dhy.rpc.client;
 
-import com.dhy.dubbo.framework.ProxyFactory;
-import com.dhy.dubbo.framework.RpcContext;
+import com.dhy.duck.framework.ProxyFactory;
+import com.dhy.duck.framework.RpcContext;
 import com.dhy.server.itf.IUserServive;
 import com.dhy.server.dto.User;
 
@@ -11,14 +11,13 @@ import java.util.concurrent.ExecutionException;
 public class MyRmiClient {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         //通过jdk代理生成一个IUserServive代理对象
-        ProxyFactory<IUserServive> proxyFactory = new ProxyFactory<IUserServive>();
-        IUserServive userServive= proxyFactory.getProxy("user-service",IUserServive.class);
+        IUserServive userServive= ProxyFactory.getProxy("user-service",IUserServive.class);
         System.out.println("获取代理对象成功：");
 
         try {
             while (true){
                 System.out.println("调用方法before");
-                User user = userServive.getUserById(100L);
+                userServive.getUserById(100L);
 
                 System.out.println("异步请求开始");
                 CompletableFuture completableFuture = RpcContext.get();
