@@ -1,5 +1,6 @@
 package com.dhy.rpc.client;
 
+import com.dhy.duck.config.DuckConfig;
 import com.dhy.duck.framework.ProxyFactory;
 import com.dhy.duck.framework.RpcContext;
 import com.dhy.server.itf.IUserServive;
@@ -10,12 +11,16 @@ import java.util.concurrent.ExecutionException;
 
 public class MyRmiClient {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
+        DuckConfig duckConfig = DuckConfig.getInstance();
+        duckConfig.setRegisterHost("127.0.0.1");
+        duckConfig.setRegisterPort("2181");
+
         //通过jdk代理生成一个IUserServive代理对象
         IUserServive userServive= ProxyFactory.getProxy("user-service",IUserServive.class);
         System.out.println("获取代理对象成功：");
 
         try {
-            while (true){
+            //while (true){
                 System.out.println("调用方法before");
                 userServive.getUserById(100L);
 
@@ -26,7 +31,7 @@ public class MyRmiClient {
                 System.out.println("调用方法after");
                 System.out.println(result);
                 //TimeUnit.SECONDS.sleep(1);
-            }
+            //}
 
 
         }catch (Exception e){

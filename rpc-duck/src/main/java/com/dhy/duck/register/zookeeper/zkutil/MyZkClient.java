@@ -1,6 +1,7 @@
 package com.dhy.duck.register.zookeeper.zkutil;
 
 import com.dhy.duck.cache.LocalCacheFactory;
+import com.dhy.duck.config.DuckConfig;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -16,25 +17,23 @@ import org.apache.zookeeper.data.Stat;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * zk 客户端
+ */
 public class MyZkClient {
-    //会话超时时间
-    private static final int SESSION_TIMEOUT = 30 * 1000;
-    //连接超时时间
-    private static final int CONNECTION_TIMEOUT = 3 * 1000;
-    //ZooKeeper服务地址
-    private static final String CONNECT_ADDR = "127.0.0.1:2181";
-
-    //创建连接实例
-    private CuratorFramework client = null;
+    private DuckConfig duckConfig;
+    private CuratorFramework client;
 
 
-    public MyZkClient() {
+    public MyZkClient(DuckConfig duckConfig) {
+        this.duckConfig = duckConfig;
         //1 重试策略：初试时间为1s 重试10次
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 10);
         //2 通过工厂创建连接
         client = CuratorFrameworkFactory.builder()
-                .connectString(CONNECT_ADDR).connectionTimeoutMs(CONNECTION_TIMEOUT)
-                .sessionTimeoutMs(SESSION_TIMEOUT)
+                .connectString(duckConfig.getRegisterHost()+":"+duckConfig.getRegisterPort())
+                .connectionTimeoutMs(duckConfig.getConnectionTimeout())
+                .sessionTimeoutMs(duckConfig.getSessionTimeout())
                 .retryPolicy(retryPolicy)
                 //命名空间           .namespace("super")
                 .build();

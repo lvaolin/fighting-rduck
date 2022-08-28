@@ -1,6 +1,7 @@
 package com.dhy.duck.protocol.rmi;
 
 
+import com.dhy.duck.config.DuckConfig;
 import com.dhy.duck.framework.URL;
 import com.dhy.duck.register.zookeeper.zkutil.MyZkClient;
 
@@ -34,7 +35,7 @@ public class RmiServer {
     public  void start(URL url) throws IOException {
 
         ServerSocket serverSocket = new ServerSocket(url.getPort());
-        MyZkClient myZkClient = new MyZkClient();
+        MyZkClient myZkClient = new MyZkClient(DuckConfig.getInstance());
         String rootName="/"+applicationName;
         //服务节点是否存在
         if (!myZkClient.exist(rootName)) {

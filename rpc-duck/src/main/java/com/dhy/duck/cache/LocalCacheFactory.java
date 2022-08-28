@@ -1,5 +1,6 @@
 package com.dhy.duck.cache;
 
+import com.dhy.duck.config.DuckConfig;
 import com.dhy.duck.register.zookeeper.zkutil.MyZkClient;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -21,7 +22,7 @@ public class LocalCacheFactory {
     /**
      * zookeeper 客户端长连接
      */
-    public static MyZkClient myZkClient = new MyZkClient();
+    public static MyZkClient myZkClient = new MyZkClient(DuckConfig.getInstance());
 
     /**
      * 目录监视器缓存
