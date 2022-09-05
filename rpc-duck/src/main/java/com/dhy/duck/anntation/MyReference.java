@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * @Author lvaolin
  * @Date 2021/3/13 20:38
  **/
-@Target({ElementType.FIELD})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyReference {
     String name() default "";

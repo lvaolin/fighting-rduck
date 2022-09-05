@@ -18,5 +18,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Duck {
     boolean enable() default true;
-    String scanBasePackage();
+    String[] scanBasePackage();
 }
