@@ -1,10 +1,15 @@
 package com.dhy.duck.clientspring.controller;
 
 import com.dhy.duck.anntation.MyReference;
+import com.dhy.duck.framework.RpcContext;
+import com.dhy.server.dto.User;
 import com.dhy.server.itf.IUserServive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @Project rduck
@@ -18,8 +23,17 @@ public class TestController {
     private IUserServive userServive;
 
     @RequestMapping("/test")
-    public Object test(){
+    public Object test() throws ExecutionException, InterruptedException {
+
         System.out.println("666");
-        return "ok";
+        //return "ok";
+        userServive.getUserById(1L);
+        System.out.println("异步请求开始");
+        CompletableFuture completableFuture = RpcContext.get();
+        User result = (User) completableFuture.get();
+        System.out.println("响应回来了");
+        System.out.println("调用方法after");
+        System.out.println(result);
+        return result;
     }
 }

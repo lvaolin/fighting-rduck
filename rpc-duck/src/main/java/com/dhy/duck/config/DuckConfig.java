@@ -20,7 +20,10 @@ public class DuckConfig {
     //连接超时时间
     private int connectionTimeout = 3 * 1000;
 
-    private DuckConfig(){ }
+    private DuckConfig(){
+        this.registerHost = "127.0.0.1";
+        this.registerPort = "2181";
+    }
 
     public static DuckConfig getInstance(){
         return  duckConfig;

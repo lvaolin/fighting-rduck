@@ -38,7 +38,7 @@ public class AnntationProcesser implements ImportBeanDefinitionRegistrar, Resour
         System.out.println(annotationAttributes.get("scanBasePackage"));
 
         // 构建一个classPath扫描器
-        ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(registry,false);
+        MyClassPathScanner scanner = new MyClassPathScanner(registry,false);
         scanner.setResourceLoader(this.resourceLoader);
         AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(MyReference.class);
         scanner.addIncludeFilter(annotationTypeFilter);
@@ -55,30 +55,7 @@ public class AnntationProcesser implements ImportBeanDefinitionRegistrar, Resour
         basePackages.add(ClassUtils.getPackageName(metadata.getClassName()));
         log.info(Arrays.toString(basePackages.toArray()));
         for (String basePackage : basePackages) {
-            Set<BeanDefinition> candidateComponents = scanner.findCandidateComponents(basePackage);
-            // 构建信息
-            if (!candidateComponents.isEmpty()) {
-                for (BeanDefinition bd : candidateComponents) {
-                    // 注入数据
-                    String className = bd.getBeanClassName();
-
-//                    try {
-//                        // 这里如果直接使用Class.forName(className) 可能会找不到类
-//                        Class clazz = resourceLoader.getClassLoader().loadClass(className);
-//                        BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(clazz);
-//                        String beanId = importBeanNameGenerator.generateBeanName(bd, registry);
-//
-//                        // 这里还可以设置依赖项，是否懒加载，构造方法参数等等与类定义有关的参数
-//                        definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
-//                        AbstractBeanDefinition beanDefinition = definition.getBeanDefinition();
-//                        beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, className);
-//                        BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanId);
-//                        BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
-//                    } catch (ClassNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-                }
-            }
+            Set<BeanDefinitionHolder> candidateComponents = scanner.doScan(basePackage);
         }
     }
 
